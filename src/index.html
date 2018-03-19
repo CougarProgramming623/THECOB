@@ -1,0 +1,102 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>The Cougar Optic Board</title>
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+	<div class="row">
+		<!-- COLUMN 1: Field -->
+		<div class="column">
+			<canvas id="field" width="420px" height="500px" style="margin: 10px;"></canvas>
+		</div>
+		<!-- COLUMN 2: Timer, Compass,  -->
+		<div class="column">
+			<div id="timer" class="no-blink" style="font-size:700%; text-align:center;">2:15</div>
+			<div>
+				<svg id="gyro" width="100%" height="50%">
+					<defs>
+    					<radialGradient id="gyroGradient">
+      						<stop offset="10%" stop-color="rgba(255, 255, 80, 1)"/>
+      						<stop offset="95%" stop-color="rgba(255, 215, 0, 1)"/>
+    					</radialGradient>
+  					</defs>
+					<circle cx="50%" cy="43.5%" r="128px" fill="url(#gyroGradient)"></circle>
+					<g id="rotation-arm">
+						<rect x="49%" y="7%" width="10px" height="115px" fill="green"></rect>
+						<polygon points="203,35 243,35 223,10" fill="green"></polygon>
+					</g>
+					<g id="velocity-arm" >
+						<rect id="velocity-arm-rect" class="velocity-arm-rect-on"  x="49%" y="23.1%" width="10px" height="65px"></rect>
+						<polygon id="velocity-arm-tri" points="203,90 243,90 223,65"></polygon>
+					</g>
+				</svg>
+			</div>
+			<marquee style="font-size:500%; text-align:center; color:gold;">Team 623 Cougar Optic Board</marquee>
+			<div id="robot-status" style="font-size:300%; text-align:center; color:gold;">Disabled</div>
+		</div>
+		<div class="column-other" align="center">
+			<canvas id="arm" width="210px" height="500px"></canvas>
+		</div>
+		<!-- COLUMN 3: Autonomous Selector -->
+		<div class="column" align="center">
+			<select id="auto-chooser">
+				<option value="none">Choose Autonomous</option>
+				<option value="left">Left</option>
+				<option value="center">Center</option>
+				<option value="right">Right</option>
+			</select>
+			<div id="auto-field-config" style="font-size:300%; text-align:center; color:gold">000</div>
+			<div class="auto-selection-box">
+				<!-- LEFT AUTO OPTIONS -->
+				<div id="auto-left" class="auto-left">
+					<button type="button" id="button-auto-left-choice-easy" class="button-on">Auto-Optimize</button>
+					<button type="button" id="button-auto-left-choice-switch" class="button-off">Force Switch</button>
+					<button type="button" id="button-auto-left-choice-scale" class="button-off">Force Scale</button>
+					<button type="button" id="button-auto-left-choice-baseline" class="button-off">Only Baseline</button>
+				</div>
+				<!-- CENTER AUTO OPTIONS -->
+				<div id="auto-center" class="auto-center">
+					<button type="button" id="button-auto-center-delay-down" class="button-other">&#9660;</button>
+					<button type="button" id="auto-center-display" class="button-not">0</button>
+					<button type="button" id="button-auto-center-delay-up" class="button-other">&#9650;</button>
+				</div>
+				<!-- RIGHT AUTO OPTIONS -->
+				<div id="auto-right" class="auto-right">
+					<button type="button" id="button-auto-right-choice-easy" class="button-on">Auto-Optimize</button>
+					<button type="button" id="button-auto-right-choice-switch" class="button-off">Force Switch</button>
+					<button type="button" id="button-auto-right-choice-scale" class="button-off">Force Scale</button>
+					<button type="button" id="button-auto-right-choice-baseline" class="button-off">Only Baseline</button>
+				</div>
+				<div style="display: block">
+					<button type="button" id="button-auto-checkbox-enable-opposite" class="button-on">Enable Opposite</button>
+					<button type="button" id="button-auto-checkbox-emergency-no-auto" class="button-off">NO AUTO</button>
+				</div>
+			</div>
+			<div>
+				<div id="lidar-text" class="no-blink" style="font-size:300%; text-align:center;">LIDAR: Off</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="greybox">
+        <div id="login">
+            <input id="connect-address" type="text" value="localhost" disabled>
+            <button id="connect" disabled>Connecting</button>
+        </div>
+    </div>
+    
+    
+    <header>
+        <!-- Tells whether robot is connected to dashboard. -->
+        <div id="robot-state">Unknown state</div>
+        <button id="tuning-button">Tuning</button>
+    </header>
+    
+    
+	<script src="networktables/networktables.js"></script>
+	<script src="ui.js"></script>
+</body>
+</html>
