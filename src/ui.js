@@ -35,6 +35,7 @@ let addresses = {
 		alliance : '/cob/fms/alliance' //pass if the alliance is red (true, false)
 	},
 	lidar: '/cob/lidar',
+	update: '/cob/update',
 	debug : {
 		error : '/cob/debug/error' //used for debugging the COB
 	}
@@ -216,6 +217,30 @@ NetworkTables.putValue('' + addresses.game.autonomous, false); //not in auto
 NetworkTables.putValue('' + addresses.game.teleop, false); //not in tele
 NetworkTables.putValue('' + addresses.game.enabled, false); //disabled
 
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ RESEND VALUES~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//We resend the network table values whenever instructed to by the robot
+function resend() {
+	NetworkTables.putValue('' + addresses.autonomous.emergencyStop, ui.autonomous.emergencyStop);
+	NetworkTables.putValue('' + addresses.autonomous.side, ui.autonomous.autoChooser.selectedIndex);
+	switch (ui.autonomous.autoChooser.selectedIndex) {
+	case 1: {
+		NetworkTables.putValue('' + addresses.autonomous.instructions, ui.autonomous.left.instructions);
+		break;
+	}
+	case 2: {
+		NetworkTables.putValue('' + addresses.autonomous.instructions, ui.autonomous.center.delay);
+		break;
+	}
+	case 3: {
+		NetworkTables.putValue('' + addresses.autonomous.instructions, ui.autonomous.right.instructions);
+	}
+	}
+	NetworkTables.putValue('' + addresses.autonomous.enableOpposite, ui.autonomous.enableOpposite);
+}
+NetworkTables.addKeyListener('' + addresses.update, (key, value) => {
+	resend();
+});
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~ FIELD CANVAS~~~~~~~~~~~~~~~~~~~~~~~~~
 //autonomous is not running by default
 let autonomousRunning = false;
