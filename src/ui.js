@@ -81,6 +81,7 @@ let ui = {
 		left : {
 			instructions : 0, //the left instructions value
 			doEasiestButton : document.getElementById('button-auto-left-choice-easy'), //the left do easiest button
+			doHardestButton : document.getElementById('button-auto-left-choice-hard'), //the left do hardest button
 			doSwitchButton : document.getElementById('button-auto-left-choice-switch'), //the left force switch button
 			doScaleButton : document.getElementById('button-auto-left-choice-scale'), //the left force scale button
 			doBaselineButton : document.getElementById('button-auto-left-choice-baseline') //the left baseline button
@@ -94,6 +95,7 @@ let ui = {
 		right : {
 			instructions : 0, //the right instructions value
 			doEasiestButton : document.getElementById('button-auto-right-choice-easy'), //the right do easiest button
+			doHardestButton : document.getElementById('button-auto-right-choice-hard'), //the left do hardest button
 			doSwitchButton : document.getElementById('button-auto-right-choice-switch'), //the right force switch button
 			doScaleButton : document.getElementById('button-auto-right-choice-scale'), //the right force scale button
 			doBaselineButton : document.getElementById('button-auto-right-choice-baseline') //the right force baseline button
@@ -154,7 +156,7 @@ function onRobotConnection(connected) {
 		connect.disabled = false;
 		connect.firstChild.data = 'Connect';
 		// CHANGE THIS VALUE TO YOUR ROBOT'S IP ADDRESS
-		address.value = 'roborio-623-frc.local';
+		address.value = '10.6.23.2';
 		address.focus();
 		address.setSelectionRange(8, 12);
 		// On click try to connect and disable the input and the button
@@ -181,7 +183,7 @@ function onRobotConnection(connected) {
 	NetworkTables.putValue('' + addresses.autonomous.instructions, 0); //do easy || delay of 0
 	NetworkTables.putValue('' + addresses.autonomous.enableOpposite, true); //enable opposite side
 	NetworkTables.putValue('' + addresses.fms.time, 0); //0:00
-	NetworkTables.putValue('' + addresses.fms.field, "YUM"); //lol
+	NetworkTables.putValue('' + addresses.fms.field, "RIP"); //lol
 	NetworkTables.putValue('' + addresses.fms.alliance, true); //red
 	NetworkTables.putValue('' + addresses.arm.height, 0.6); //initial height just above pivot
 	NetworkTables.putValue('' + addresses.arm.rotation, 0); //begin folded
@@ -209,7 +211,7 @@ NetworkTables.putValue('' + addresses.autonomous.side, 0); //left
 NetworkTables.putValue('' + addresses.autonomous.instructions, 0); //do easy || delay of 0
 NetworkTables.putValue('' + addresses.autonomous.enableOpposite, true); //enable opposite side
 NetworkTables.putValue('' + addresses.fms.time, 0); //0:00
-NetworkTables.putValue('' + addresses.fms.field, "YUM"); //lol
+NetworkTables.putValue('' + addresses.fms.field, "RIP"); //lol
 NetworkTables.putValue('' + addresses.fms.alliance, true); //red
 NetworkTables.putValue('' + addresses.arm.height, 0.6); //initial height just above pivot
 NetworkTables.putValue('' + addresses.arm.rotation, 0); //begin folded
@@ -572,6 +574,20 @@ ui.autonomous.left.doEasiestButton.onclick = function() {
 	ui.autonomous.left.instructions = 0;
 	NetworkTables.putValue('' + addresses.autonomous.instructions, 0);
 	ui.autonomous.left.doEasiestButton.setAttribute("class", "button-on");
+	ui.autonomous.left.doHardestButton.setAttribute("class", "button-off");
+	ui.autonomous.left.doSwitchButton.setAttribute("class", "button-off");
+	ui.autonomous.left.doScaleButton.setAttribute("class", "button-off");
+	ui.autonomous.left.doBaselineButton.setAttribute("class", "button-off");
+	drawField();
+	drawAutonomousRoutes();
+}
+
+//the left do hardest handler
+ui.autonomous.left.doHardestButton.onclick = function() {
+	ui.autonomous.left.instructions = 1;
+	NetworkTables.putValue('' + addresses.autonomous.instructions, 1);
+	ui.autonomous.left.doEasiestButton.setAttribute("class", "button-off");
+	ui.autonomous.left.doHardestButton.setAttribute("class", "button-on");
 	ui.autonomous.left.doSwitchButton.setAttribute("class", "button-off");
 	ui.autonomous.left.doScaleButton.setAttribute("class", "button-off");
 	ui.autonomous.left.doBaselineButton.setAttribute("class", "button-off");
@@ -581,9 +597,10 @@ ui.autonomous.left.doEasiestButton.onclick = function() {
 
 //the left do switch handler
 ui.autonomous.left.doSwitchButton.onclick = function() {
-	ui.autonomous.left.instructions = 1;
-	NetworkTables.putValue('' + addresses.autonomous.instructions, 1);
+	ui.autonomous.left.instructions = 2;
+	NetworkTables.putValue('' + addresses.autonomous.instructions, 2);
 	ui.autonomous.left.doEasiestButton.setAttribute("class", "button-off");
+	ui.autonomous.left.doHardestButton.setAttribute("class", "button-off");
 	ui.autonomous.left.doSwitchButton.setAttribute("class", "button-on");
 	ui.autonomous.left.doScaleButton.setAttribute("class", "button-off");
 	ui.autonomous.left.doBaselineButton.setAttribute("class", "button-off");
@@ -593,9 +610,10 @@ ui.autonomous.left.doSwitchButton.onclick = function() {
 
 //the left do scale handler
 ui.autonomous.left.doScaleButton.onclick = function() {
-	ui.autonomous.left.instructions = 2;
-	NetworkTables.putValue('' + addresses.autonomous.instructions, 2);
+	ui.autonomous.left.instructions = 3;
+	NetworkTables.putValue('' + addresses.autonomous.instructions, 3);
 	ui.autonomous.left.doEasiestButton.setAttribute("class", "button-off");
+	ui.autonomous.left.doHardestButton.setAttribute("class", "button-off");
 	ui.autonomous.left.doSwitchButton.setAttribute("class", "button-off");
 	ui.autonomous.left.doScaleButton.setAttribute("class", "button-on");
 	ui.autonomous.left.doBaselineButton.setAttribute("class", "button-off");
@@ -605,10 +623,11 @@ ui.autonomous.left.doScaleButton.onclick = function() {
 
 //the left do baseline handler
 ui.autonomous.left.doBaselineButton.onclick = function() {
-	ui.autonomous.left.instructions = 3;
-	NetworkTables.putValue('' + addresses.autonomous.instructions, 3);
+	ui.autonomous.left.instructions = 4;
+	NetworkTables.putValue('' + addresses.autonomous.instructions, 4);
 	ui.autonomous.left.doEasiestButton.setAttribute("class", "button-off");
 	ui.autonomous.left.doSwitchButton.setAttribute("class", "button-off");
+	ui.autonomous.left.doHardestButton.setAttribute("class", "button-off");
 	ui.autonomous.left.doScaleButton.setAttribute("class", "button-off");
 	ui.autonomous.left.doBaselineButton.setAttribute("class", "button-on");
 	drawField();
@@ -622,6 +641,20 @@ ui.autonomous.right.doEasiestButton.onclick = function() {
 	ui.autonomous.right.instructions = 0;
 	NetworkTables.putValue('' + addresses.autonomous.instructions, 0);
 	ui.autonomous.right.doEasiestButton.setAttribute("class", "button-on");
+	ui.autonomous.right.doHardestButton.setAttribute("class", "button-off");
+	ui.autonomous.right.doSwitchButton.setAttribute("class", "button-off");
+	ui.autonomous.right.doScaleButton.setAttribute("class", "button-off");
+	ui.autonomous.right.doBaselineButton.setAttribute("class", "button-off");
+	drawField();
+	drawAutonomousRoutes();
+}
+
+//the right do hard handler
+ui.autonomous.right.doHardestButton.onclick = function() {
+	ui.autonomous.right.instructions = 1;
+	NetworkTables.putValue('' + addresses.autonomous.instructions, 1);
+	ui.autonomous.right.doEasiestButton.setAttribute("class", "button-off");
+	ui.autonomous.right.doHardestButton.setAttribute("class", "button-on");
 	ui.autonomous.right.doSwitchButton.setAttribute("class", "button-off");
 	ui.autonomous.right.doScaleButton.setAttribute("class", "button-off");
 	ui.autonomous.right.doBaselineButton.setAttribute("class", "button-off");
@@ -631,9 +664,10 @@ ui.autonomous.right.doEasiestButton.onclick = function() {
 
 //the right do switch handler
 ui.autonomous.right.doSwitchButton.onclick = function() {
-	ui.autonomous.right.instructions = 1;
-	NetworkTables.putValue('' + addresses.autonomous.instructions, 1);
+	ui.autonomous.right.instructions = 2;
+	NetworkTables.putValue('' + addresses.autonomous.instructions, 2);
 	ui.autonomous.right.doEasiestButton.setAttribute("class", "button-off");
+	ui.autonomous.right.doHardestButton.setAttribute("class", "button-off");
 	ui.autonomous.right.doSwitchButton.setAttribute("class", "button-on");
 	ui.autonomous.right.doScaleButton.setAttribute("class", "button-off");
 	ui.autonomous.right.doBaselineButton.setAttribute("class", "button-off");
@@ -643,9 +677,10 @@ ui.autonomous.right.doSwitchButton.onclick = function() {
 
 //the right do scale handler
 ui.autonomous.right.doScaleButton.onclick = function() {
-	ui.autonomous.right.instructions = 2;
-	NetworkTables.putValue('' + addresses.autonomous.instructions, 2);
+	ui.autonomous.right.instructions = 3;
+	NetworkTables.putValue('' + addresses.autonomous.instructions, 3);
 	ui.autonomous.right.doEasiestButton.setAttribute("class", "button-off");
+	ui.autonomous.right.doHardestButton.setAttribute("class", "button-off");
 	ui.autonomous.right.doSwitchButton.setAttribute("class", "button-off");
 	ui.autonomous.right.doScaleButton.setAttribute("class", "button-on");
 	ui.autonomous.right.doBaselineButton.setAttribute("class", "button-off");
@@ -655,9 +690,10 @@ ui.autonomous.right.doScaleButton.onclick = function() {
 
 //the right do baseline handler
 ui.autonomous.right.doBaselineButton.onclick = function() {
-	ui.autonomous.right.instructions = 3;
-	NetworkTables.putValue('' + addresses.autonomous.instructions, 3);
+	ui.autonomous.right.instructions = 4;
+	NetworkTables.putValue('' + addresses.autonomous.instructions, 4);
 	ui.autonomous.right.doEasiestButton.setAttribute("class", "button-off");
+	ui.autonomous.right.doHardestButton.setAttribute("class", "button-off");
 	ui.autonomous.right.doSwitchButton.setAttribute("class", "button-off");
 	ui.autonomous.right.doScaleButton.setAttribute("class", "button-off");
 	ui.autonomous.right.doBaselineButton.setAttribute("class", "button-on");
@@ -715,6 +751,7 @@ function resetAutoOptions() {
 	
 	//left buttons
 	ui.autonomous.left.doEasiestButton.setAttribute("class", "button-on");
+	ui.autonomous.left.doHardestButton.setAttribute("class", "button-off");
 	ui.autonomous.left.doSwitchButton.setAttribute("class", "button-off");
 	ui.autonomous.left.doScaleButton.setAttribute("class", "button-off");
 	ui.autonomous.left.doBaselineButton.setAttribute("class", "button-off");
@@ -724,6 +761,7 @@ function resetAutoOptions() {
 
 	//right buttons
 	ui.autonomous.right.doEasiestButton.setAttribute("class", "button-on");
+	ui.autonomous.right.doEasiestButton.setAttribute("class", "button-off");
 	ui.autonomous.right.doSwitchButton.setAttribute("class", "button-off");
 	ui.autonomous.right.doScaleButton.setAttribute("class", "button-off");
 	ui.autonomous.right.doBaselineButton.setAttribute("class", "button-off");
@@ -779,9 +817,9 @@ function drawAutonomousRoutes() {
 		let context = ui.field.getContext("2d");
 		let side = ui.autonomous.autoChooser.selectedIndex - 1;
 		let instructions = NetworkTables.getValue('' + addresses.autonomous.instructions);
-		let doSwitch = instructions == 0 || instructions == 1;
-		let doScale = instructions == 0 || instructions == 2;
-		let doBaseline = instructions == 3;
+		let doSwitch = instructions == 0 || instructions == 1 || instructions == 2;
+		let doScale = instructions == 0 || instructions == 1 || instructions == 3;
+		let doBaseline = true;
 		let optimize = ui.autonomous.enableOpposite;
 		let horizontalDisplacement = 103;
 
@@ -794,14 +832,14 @@ function drawAutonomousRoutes() {
 				context.drawImage(autoImageSwitchNear, horizontalDisplacement, 0, 248, 500);
 				if (optimize) {
 					context.drawImage(autoImageSwitchOptimize, horizontalDisplacement, 0, 248, 500);
-					context.drawImage(autoImageSwitchFar, horizontalDisplacement, 0, 248, 500);
+					//context.drawImage(autoImageSwitchFar, horizontalDisplacement, 0, 248, 500);
 				}
 			}
 			if (doScale) {
 				context.drawImage(autoImageScaleNear, horizontalDisplacement, 0, 248, 500);
 				if (optimize) {
 					context.drawImage(autoImageScaleOptimize, horizontalDisplacement, 0, 248, 500);
-					context.drawImage(autoImageScaleFar, horizontalDisplacement, 0, 248, 500);
+					//context.drawImage(autoImageScaleFar, horizontalDisplacement, 0, 248, 500);
 				}
 			}
 			if (doBaseline || !optimize) {
@@ -814,14 +852,14 @@ function drawAutonomousRoutes() {
 				context.drawImage(autoImageSwitchNearReversed, horizontalDisplacement, 0, 248, 500);
 				if (optimize) {
 					context.drawImage(autoImageSwitchOptimizeReversed, horizontalDisplacement, 0, 248, 500);
-					context.drawImage(autoImageSwitchFarReversed, horizontalDisplacement, 0, 248, 500);
+					//context.drawImage(autoImageSwitchFarReversed, horizontalDisplacement, 0, 248, 500);
 				}
 			}
 			if (doScale) {
 				context.drawImage(autoImageScaleNearReversed, horizontalDisplacement, 0, 248, 500);
 				if (optimize) {
 					context.drawImage(autoImageScaleOptimizeReversed, horizontalDisplacement, 0, 248, 500);
-					context.drawImage(autoImageScaleFarReversed, horizontalDisplacement, 0, 248, 500);
+					//context.drawImage(autoImageScaleFarReversed, horizontalDisplacement, 0, 248, 500);
 				}
 			}
 			if (doBaseline || !optimize) {
